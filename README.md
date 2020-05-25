@@ -2,6 +2,8 @@
 
 Try to use Tkinter GUI with easy Pixiv website crawler together.
 
+![Imgur](https://i.imgur.com/oMrLKhD.jpg)
+
 ## Current function
 
 1. You can select a directory for saving pictures.
