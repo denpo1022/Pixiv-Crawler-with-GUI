@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from crawler import crawler_main
+from crawler import crawlerMain
 
 
 class CrawlerWindow(tk.Frame):
@@ -12,23 +12,23 @@ class CrawlerWindow(tk.Frame):
         self.master.geometry("600x400")
         self.PAD = 5
         self.pack()
-        self.create_window()
+        self.createWindow()
 
-    def command_init_crawler(self):
-        crawler_main(self.get_keyword(), self.get_target_directory())
+    def commandInitCrawler(self):
+        crawlerMain(self.getKeyword(), self.getTargetDirectory())
 
-    def command_select_directory(self):
+    def commandSelectDirectory(self):
         self.selectDir_entry.delete("0", "end")
         self.selectedDir = filedialog.askdirectory()
         self.selectDir_entry.insert("end", self.selectedDir)
 
-    def get_target_directory(self):
+    def getTargetDirectory(self):
         return self.selectDir_entry.get()
 
-    def get_keyword(self):
+    def getKeyword(self):
         return self.search_entry.get()
 
-    def create_window(self):
+    def createWindow(self):
 
         # initialize header label
         self.header_label = tk.Label(self, text="Pixiv Crawler")
@@ -46,7 +46,7 @@ class CrawlerWindow(tk.Frame):
         self.selectDir_entry = tk.Entry(self.selectDir_frame, width=60)
         self.selectDir_entry.pack(side=tk.LEFT, padx=self.PAD)
         self.selectDir_button = tk.Button(
-            self.selectDir_frame, text="Choose", command=self.command_select_directory
+            self.selectDir_frame, text="Choose", command=self.commandSelectDirectory
         )
         self.selectDir_button.pack(side=tk.RIGHT)
 
@@ -62,6 +62,6 @@ class CrawlerWindow(tk.Frame):
         self.search_entry = tk.Entry(self.search_frame, width=40)
         self.search_entry.pack(side=tk.LEFT, padx=self.PAD)
         self.search_button = tk.Button(
-            self.search_frame, text="search", command=self.command_init_crawler,
+            self.search_frame, text="search", command=self.commandInitCrawler,
         )
         self.search_button.pack(side=tk.RIGHT)

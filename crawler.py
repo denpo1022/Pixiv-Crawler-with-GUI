@@ -5,7 +5,7 @@ import urllib.parse
 from urllib.request import urlopen, Request
 
 
-def crawler_main(keyword, target_directory):
+def crawlerMain(keyword, target_directory):
     id_count = sub_id = total_work_count = 0
     page_index = 1
     max_page = 1
