@@ -7,7 +7,8 @@ Try to use Tkinter GUI with easy Pixiv website crawler together.
 ## Current function
 
 1. You can select a directory for saving pictures.
-2. You can search base on the keyword you typed and download first page of illustration works (which means 60 works with equal or more than 60 original size pictures) automatically at Pixiv website. The pictures are ordered from latest to oldest.
+2. Input the keyword and click "search" button will show you how many works on Pixiv now.
+3. You can download images based on your keyword. It will download first page of illustration works (which means 60 works with equal or more than 60 original size pictures) automatically at Pixiv website. The pictures are ordered from latest to oldest.
 
 ## How to use
 
@@ -21,7 +22,7 @@ On Linux:
 
 ## TODO
 
-1. Let users can specify how many works they want to crawl.
+1. Let users can specify how many works they want to download.
 2. Add "pause", "stop", "continue" function.
 3. Add multi-thread procession.
 4. Add more comments for explaining the codes.
