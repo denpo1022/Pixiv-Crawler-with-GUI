@@ -29,13 +29,13 @@ class CrawlerWindow(tk.Frame):
         self.selectDir_entry.insert("end", self.selectedDir)
 
     def getWorkAmounts(self):
-        self.work_amount = getTotalWorks(self.getKeyword())
-        self.amount_work_label = tk.Label(
-            self.amount_work,
-            text="Total {} works found".format(self.work_amount),
-            font=self.font_style,
-        )
-        self.amount_work_label.pack(side=tk.TOP)
+        if self.getKeyword():
+            self.work_amount = getTotalWorks(self.getKeyword())
+            self.amount_work_label.configure(
+                bg="SystemButtonFace", text="Total {} works found".format(self.work_amount)
+            )
+        else:
+            self.amount_work_label.configure(bg="red", text="Keyword cannot be empty!")
 
     def getTargetDirectory(self):
         return self.selectDir_entry.get()
@@ -83,3 +83,9 @@ class CrawlerWindow(tk.Frame):
         # initialize amount_work group
         self.amount_work = tk.Frame(self)
         self.amount_work.pack(side=tk.TOP, pady=self.PAD)
+        self.amount_work_label = tk.Label(
+            self.amount_work,
+            text="Total {} works found".format(self.work_amount),
+            font=self.font_style,
+        )
+        self.amount_work_label.pack(side=tk.TOP)

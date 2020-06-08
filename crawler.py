@@ -40,9 +40,7 @@ def getTotalWorks(keyword):
 
     JSON = session.json()
     session.close()
-    works = JSON["body"]["illustManga"]["total"]
-    print(works, type(works))
-    return works
+    return JSON["body"]["illustManga"]["total"]
 
 
 def crawlerMain(keyword, target_directory):
