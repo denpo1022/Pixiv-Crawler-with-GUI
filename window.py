@@ -1,4 +1,5 @@
 import tkinter as tk
+import time
 from tkinter import filedialog
 from crawler import crawlerMain, getTotalWorks
 
@@ -15,9 +16,6 @@ class CrawlerWindow(tk.Frame):
         self.pack()
         self.createWindow()
 
-    def initCrawler(self):
-        crawlerMain(self.getKeyword(), self.getTargetDirectory())
-
     def selectDirectory(self):
         # Everytime when user press select directory button, clean the entry bar first
         self.selectDir_entry.delete("0", "end")
@@ -28,11 +26,31 @@ class CrawlerWindow(tk.Frame):
         # Insert the directory path into the entry bar
         self.selectDir_entry.insert("end", self.selectedDir)
 
+    def startToCraw(self):
+        if self.getKeyword() and self.getTargetDirectory():
+            self.empty_dir_warn.configure(bg="SystemButtonFace", text="")
+            self.empty_keyword_warn.configure(bg="SystemButtonFace", text="")
+            crawlerMain(self.getKeyword(), self.getTargetDirectory())
+        elif not self.getKeyword() and not self.getTargetDirectory():
+            self.empty_dir_warn.configure(
+                bg="red", text="Target directory path cannot be empty!"
+            )
+            self.empty_keyword_warn.configure(bg="red", text="Keyword cannot be empty!")
+        elif not self.getTargetDirectory():
+            self.empty_dir_warn.configure(
+                bg="red", text="Target directory path cannot be empty!"
+            )
+            self.empty_keyword_warn.configure(bg="SystemButtonFace", text="")
+        elif not self.getKeyword():
+            self.empty_keyword_warn.configure(bg="red", text="Keyword cannot be empty!")
+            self.empty_dir_warn.configure(bg="SystemButtonFace", text="")
+
     def getWorkAmounts(self):
         if self.getKeyword():
             self.work_amount = getTotalWorks(self.getKeyword())
             self.amount_work_label.configure(
-                bg="SystemButtonFace", text="Total {} works found".format(self.work_amount)
+                bg="SystemButtonFace",
+                text="Total {} works found".format(self.work_amount),
             )
         else:
             self.amount_work_label.configure(bg="red", text="Keyword cannot be empty!")
@@ -44,11 +62,11 @@ class CrawlerWindow(tk.Frame):
         return self.search_entry.get()
 
     def createWindow(self):
-        # initialize header label
+        # Initialize header label
         self.header_label = tk.Label(self, text="Pixiv Crawler")
         self.header_label.pack()
 
-        # initialize directory path group
+        # Initialize directory path group
         self.selectDir_frame = tk.Frame(self)
         self.selectDir_frame.pack(side=tk.TOP, pady=self.PAD)
         self.selectDir_label = tk.Label(
@@ -64,7 +82,7 @@ class CrawlerWindow(tk.Frame):
         )
         self.selectDir_button.pack(side=tk.RIGHT)
 
-        # initialize search group
+        # Initialize search group
         self.search_frame = tk.Frame(self)
         self.search_frame.pack(side=tk.TOP, pady=self.PAD)
         self.search_label = tk.Label(
@@ -76,11 +94,11 @@ class CrawlerWindow(tk.Frame):
         self.search_entry = tk.Entry(self.search_frame, width=40)
         self.search_entry.pack(side=tk.LEFT, padx=self.PAD)
         self.search_button = tk.Button(
-            self.search_frame, text="search", command=self.getWorkAmounts,
+            self.search_frame, text="search", command=self.getWorkAmounts
         )
         self.search_button.pack(side=tk.RIGHT)
 
-        # initialize amount_work group
+        # Initialize amount_work group
         self.amount_work = tk.Frame(self)
         self.amount_work.pack(side=tk.TOP, pady=self.PAD)
         self.amount_work_label = tk.Label(
@@ -89,3 +107,15 @@ class CrawlerWindow(tk.Frame):
             font=self.font_style,
         )
         self.amount_work_label.pack(side=tk.TOP)
+
+        # Initialize download group
+        self.download_frame = tk.Frame(self)
+        self.download_frame.pack(side=tk.TOP, pady=self.PAD)
+        self.download_button = tk.Button(
+            self.download_frame, text="download", command=self.startToCraw
+        )
+        self.download_button.pack(side=tk.TOP)
+        self.empty_dir_warn = tk.Label(self.download_frame, font=self.font_style)
+        self.empty_dir_warn.pack(side=tk.TOP)
+        self.empty_keyword_warn = tk.Label(self.download_frame, font=self.font_style)
+        self.empty_keyword_warn.pack(side=tk.TOP)
