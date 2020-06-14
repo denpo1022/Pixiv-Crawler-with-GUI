@@ -78,7 +78,7 @@ class CrawlerWindow(tk.Frame):
         self.selectDir_entry = tk.Entry(self.selectDir_frame, width=60)
         self.selectDir_entry.pack(side=tk.LEFT, padx=self.PAD)
         self.selectDir_button = tk.Button(
-            self.selectDir_frame, text="Choose", command=self.selectDirectory
+            self.selectDir_frame, text="choose", command=self.selectDirectory
         )
         self.selectDir_button.pack(side=tk.RIGHT)
 
@@ -87,7 +87,7 @@ class CrawlerWindow(tk.Frame):
         self.search_frame.pack(side=tk.TOP, pady=self.PAD)
         self.search_label = tk.Label(
             self.search_frame,
-            text="Type your keyword for searching:",
+            text="Type your keyword to get the amount of works:",
             font=self.font_style,
         )
         self.search_label.pack(side=tk.TOP)
@@ -107,6 +107,18 @@ class CrawlerWindow(tk.Frame):
             font=self.font_style,
         )
         self.amount_work_label.pack(side=tk.TOP)
+
+        # Initialize amount group
+        self.amount_frame = tk.Frame(self)
+        self.amount_frame.pack(side=tk.TOP, pady=self.PAD)
+        self.amount_label = tk.Label(
+            self.amount_frame,
+            text="How many works you want to download?",
+            font=self.font_style,
+        )
+        self.amount_label.pack(side=tk.TOP, pady=self.PAD)
+        self.amount_entry = tk.Entry(self.amount_frame, width=8)
+        self.amount_entry.pack(side=tk.TOP, pady=self.PAD)
 
         # Initialize download group
         self.download_frame = tk.Frame(self)
