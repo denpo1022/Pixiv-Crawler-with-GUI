@@ -10,7 +10,7 @@ class CrawlerWindow(tk.Frame):
         self.font_style = ("Helvetica", 16)
         self.master = master
         self.master.title("Pixiv Crawler")
-        self.master.geometry("600x400")
+        self.master.geometry("600x450")
         self.PAD = 5
         self.work_amount = 0
         self.pack()
@@ -27,23 +27,45 @@ class CrawlerWindow(tk.Frame):
         self.selectDir_entry.insert("end", self.selectedDir)
 
     def startToCraw(self):
-        if self.getKeyword() and self.getTargetDirectory():
-            self.empty_dir_warn.configure(bg="SystemButtonFace", text="")
-            self.empty_keyword_warn.configure(bg="SystemButtonFace", text="")
-            crawlerMain(self.getKeyword(), self.getTargetDirectory())
-        elif not self.getKeyword() and not self.getTargetDirectory():
-            self.empty_dir_warn.configure(
+        # Three places have to be checked: "Directory", "Keyword", "Amount"
+        dir_OK = keyword_OK = amount_OK = False
+
+        if self.getTargetDirectory():
+            dir_OK = True
+            self.dir_warn.configure(bg="SystemButtonFace", text="")
+        else:
+            self.dir_warn.configure(
                 bg="red", text="Target directory path cannot be empty!"
             )
-            self.empty_keyword_warn.configure(bg="red", text="Keyword cannot be empty!")
-        elif not self.getTargetDirectory():
-            self.empty_dir_warn.configure(
-                bg="red", text="Target directory path cannot be empty!"
+
+        if self.getKeyword():
+            keyword_OK = True
+            self.keyword_warn.configure(bg="SystemButtonFace", text="")
+        else:
+            self.keyword_warn.configure(bg="red", text="Keyword cannot be empty!")
+
+        if self.getUserAmounts():
+            if self.getUserAmounts().isdigit():
+                user_amount = int(self.getUserAmounts())
+                if user_amount <= self.work_amount and user_amount > 0:
+                    amount_OK = True
+                    self.amount_warn.configure(bg="SystemButtonFace", text="")
+                else:
+                    self.amount_warn.configure(
+                        bg="red",
+                        text="The integer must equal or less than total works!",
+                    )
+            else:
+                self.amount_warn.configure(
+                    bg="red", text="Please input positive integer!"
+                )
+        else:
+            self.amount_warn.configure(bg="red", text="Amount cannot be empty!")
+
+        if dir_OK and keyword_OK and amount_OK:
+            crawlerMain(
+                self.getTargetDirectory(), self.getKeyword(), self.getUserAmounts()
             )
-            self.empty_keyword_warn.configure(bg="SystemButtonFace", text="")
-        elif not self.getKeyword():
-            self.empty_keyword_warn.configure(bg="red", text="Keyword cannot be empty!")
-            self.empty_dir_warn.configure(bg="SystemButtonFace", text="")
 
     def getWorkAmounts(self):
         if self.getKeyword():
@@ -60,6 +82,9 @@ class CrawlerWindow(tk.Frame):
 
     def getKeyword(self):
         return self.search_entry.get()
+
+    def getUserAmounts(self):
+        return self.amount_entry.get()
 
     def createWindow(self):
         # Initialize header label
@@ -126,8 +151,10 @@ class CrawlerWindow(tk.Frame):
         self.download_button = tk.Button(
             self.download_frame, text="download", command=self.startToCraw
         )
-        self.download_button.pack(side=tk.TOP)
-        self.empty_dir_warn = tk.Label(self.download_frame, font=self.font_style)
-        self.empty_dir_warn.pack(side=tk.TOP)
-        self.empty_keyword_warn = tk.Label(self.download_frame, font=self.font_style)
-        self.empty_keyword_warn.pack(side=tk.TOP)
+        self.download_button.pack(side=tk.TOP, pady=self.PAD)
+        self.dir_warn = tk.Label(self.download_frame, font=self.font_style)
+        self.dir_warn.pack(side=tk.TOP, pady=self.PAD)
+        self.keyword_warn = tk.Label(self.download_frame, font=self.font_style)
+        self.keyword_warn.pack(side=tk.TOP, pady=self.PAD)
+        self.amount_warn = tk.Label(self.download_frame, font=self.font_style)
+        self.amount_warn.pack(side=tk.TOP, pady=self.PAD)

@@ -43,7 +43,7 @@ def getTotalWorks(keyword):
     return JSON["body"]["illustManga"]["total"]
 
 
-def crawlerMain(keyword, target_directory):
+def crawlerMain(target_directory, keyword, user_amount):
     id_count = sub_id = total_work_count = 0
     page_index = 1
     max_page = 1
