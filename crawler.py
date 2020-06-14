@@ -44,11 +44,16 @@ def getTotalWorks(keyword):
 
 
 def crawlerMain(target_directory, keyword, user_amount):
+    # Initialize variables
     id_count = sub_id = total_work_count = 0
     page_index = 1
-    max_page = 1
+    max_page = int(user_amount / 60)  # One page has 60 works
+    if user_amount % 60 > 0:
+        max_page += 1
+
     begin_time = int(time.time())
 
+    # Encode the keyword string into url
     keyword = urllib.parse.quote_plus(keyword)
 
     while page_index <= max_page:
@@ -76,11 +81,14 @@ def crawlerMain(target_directory, keyword, user_amount):
                     "Time limit exceeded! Please check out your internet connection and try again."
                 )
                 time.sleep(5)
+
         JSON = session.json()
         session.close()
         while id_count < len(JSON["body"]["illustManga"]["data"]):
             ID = JSON["body"]["illustManga"]["data"][id_count]["id"]
             URL = "https://www.pixiv.net/ajax/illust/" + ID + "/pages?lang=zh_tw"
+
+            # Try to get the website's session or throw an exception
             while True:
                 try:
                     session = requests.get(URL, headers=headers)
@@ -90,6 +98,7 @@ def crawlerMain(target_directory, keyword, user_amount):
                         "Time limit exceeded! Please check out your internet connection and try again."
                     )
                     time.sleep(10)
+
             JSON1 = session.json()
             session.close()
             while sub_id < len(JSON1["body"]):
@@ -100,6 +109,11 @@ def crawlerMain(target_directory, keyword, user_amount):
                     shutil.copyfileobj(response, out_file)
                 sub_id += 1
                 total_work_count += 1
+
+                # Exit the whole process when the downloading is finished
+                if total_work_count == user_amount:
+                    exit(1)
+
             sub_id = 0
             id_count += 1
             time.sleep(0.5)

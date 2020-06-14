@@ -63,9 +63,7 @@ class CrawlerWindow(tk.Frame):
             self.amount_warn.configure(bg="red", text="Amount cannot be empty!")
 
         if dir_OK and keyword_OK and amount_OK:
-            crawlerMain(
-                self.getTargetDirectory(), self.getKeyword(), self.getUserAmounts()
-            )
+            crawlerMain(self.getTargetDirectory(), self.getKeyword(), user_amount)
 
     def getWorkAmounts(self):
         if self.getKeyword():
