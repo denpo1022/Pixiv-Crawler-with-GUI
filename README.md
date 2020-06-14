@@ -16,11 +16,11 @@ You will need `python` which version is equal or later than `version=3.5`, then 
 
 On Windows 10 (cmd or powershell):
 
-`python .\main.py`
+`python .<path-to-main.py>\main.py`
 
 On Linux:
 
-`python3 main.py`
+`python3 <path-to-main.py>/main.py`
 
 ## TODO
 
